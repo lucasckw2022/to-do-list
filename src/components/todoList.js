@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import TodoItems from './todoItems'
-import { addTodoItem, deleteTodoItem } from '../actions'
+import { addTodoItem, deleteTodoItem, updateTodoItem } from '../actions'
 import { connect } from 'react-redux'
 import { Row, Input, Button, Collection, Modal } from 'react-materialize'
 
@@ -14,23 +14,50 @@ class TodoList extends React.Component {
         super(props)
         this.state = {
             text: '',
-            dueDate: ''
+            dueDate: '',
+            isEdit: false
         }
     }
     componentDidMount(){
         $( ".collection" ).sortable()
+        let todoList = this.props.todoList,
+            lastItemId = 0
+        if(todoList && todoList.length > 0){
+            todoList.map(item => {
+                item.id >= lastItemId ? lastItemId = item.id : null
+            })
+            this.setState({nextItemId: lastItemId + 1})
+        }
     }
     render(){
-        const { text, dueDate } = this.state
+        const { text, dueDate, isEdit, todoItemId, nextItemId } = this.state
         const { dispatch, todoList } = this.props
+        const editTodoItem = itemId => {
+            let todoItem = todoList.filter(item => item.id == itemId)[0],
+                text = todoItem.text,
+                dueDate = todoItem.dueDate,
+                todoItemId = todoItem.id
+            this.setState({text, dueDate, isEdit: true, todoItemId})
+            $('#todo-form').modal('open')
+        }
         return (
             <div className="container">
-                <Modal trigger={<Button>Add Item</Button>}>
+                <Button onClick={() => {
+                    this.setState({text:'', dueDate: ''})
+                    $('#todo-form').modal('open')
+                }}>Add Item</Button>
+                <Modal id="todo-form">
                     <form id="todo" onSubmit={e => {
                         e.preventDefault()
+                        let clearFormDate = {text:'', dueDate: '', isEdit: false}
                         if(text && dueDate){
-                            dispatch(addTodoItem(text, dueDate))
-                            this.setState({text:'', dueDate: ''})
+                            if(isEdit){
+                                dispatch(updateTodoItem(todoItemId, text, dueDate))
+                            } else {
+                                dispatch(addTodoItem(nextItemId, text, dueDate))
+                                clearFormDate.nextItemId = nextItemId + 1
+                            }
+                            this.setState(clearFormDate)
                         }
                     }}>
                         <Row>
@@ -49,6 +76,7 @@ class TodoList extends React.Component {
                     <TodoItems
                         key={item.id}
                         onClick={()=>dispatch(deleteTodoItem(item.id))}
+                        edit={()=>editTodoItem(item.id)}
                         {...item}
                     />
                     )}
