@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../style/App.css';
+import '../style/style.css';
 import { connect } from 'react-redux'
 import TodoList from '../components/todoList'
 

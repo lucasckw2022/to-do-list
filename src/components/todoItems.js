@@ -10,10 +10,10 @@ class todoItem extends React.Component {
     const { itemId, onClick, text, dueDate, edit } = this.props
     return (
       <CollectionItem id={itemId}>
-        <p>{text}</p>
         <p>{dueDate}</p>
-        <Button onClick={onClick}>Delete</Button>
+        <p>{text}</p>
         <Button onClick={edit}>Edit</Button>
+        <Button className="btn-delete" onClick={onClick}>Delete</Button>
       </CollectionItem>
     )
   }

@@ -25,11 +25,14 @@ const todoList = (state = [], action) => {
             })
         case 'sort':
             if(state[action.position].id != action.itemId) {
-                let origin
-                state.map((item, id) => item.id == action.itemId ? origin = id: null)
-                state.splice(action.position, 0, state.splice(origin, 1)[0])
-                state = state
-            } 
+                let origin,
+                    reordered = state.map((item, id) => item.id == action.itemId ? (
+                        origin = id,
+                        item
+                    ): item)
+                    reordered.splice(action.position, 0, reordered.splice(origin, 1)[0])
+                return reordered
+            }
             return state
         default:
             return state;

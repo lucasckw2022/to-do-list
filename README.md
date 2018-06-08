@@ -10,3 +10,13 @@ function calculate(num){
 }
 calculate(23935198273);
 ```
+
+Section B
+```
+Run project locally: 
+- npm install
+- npm start
+
+Build for production (compiled into dist folder in root folder)
+- npm run build
+```

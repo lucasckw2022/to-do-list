@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import TodoItems from './todoItems'
 import { addTodoItem, deleteTodoItem, updateTodoItem, updateOrder, multipleDeleteTodoItem } from '../actions'
 import { connect } from 'react-redux'
-import { Row, Input, Button, Collection, Modal } from 'react-materialize'
+import { Row, Input, Button, Collection, Modal, CollectionItem } from 'react-materialize'
 import { persistor } from '../store/configureStore'
 
 const mapStateToProps = state => ({
@@ -54,8 +54,11 @@ class TodoList extends React.Component {
                     this.setState({text:'', dueDate: ''})
                     $('#todo-form').modal('open')
                 }}>Add Item</Button>
-                <Modal id="delete-multiple"
-                        trigger={<Button>Delete Multiple</Button>}>
+                <Button className="btn-delete" 
+                        onClick={() => {
+                    $('#delete-multiple').modal('open')
+                }}>Delete Multiple</Button>
+                <Modal id="delete-multiple">
                     <form id="todo" onSubmit={e => {
                         e.preventDefault()
                         let removeIds = $.map($(':checked'), item=>item.value)
@@ -94,17 +97,19 @@ class TodoList extends React.Component {
                         <Button waves='light' type="submit">Submit</Button >
                     </form>
                 </Modal>
-                {todoList.length > 0 && <Collection>
-                    {todoList.map(item =>
-                    <TodoItems
-                        key={item.id}
-                        itemId={item.id}
-                        onClick={()=>dispatch(deleteTodoItem(item.id))}
-                        edit={()=>editTodoItem(item.id)}
-                        {...item}
-                    />
-                    )}
-                </Collection>}
+                <Collection>
+                    {todoList.length > 0 ? 
+                        todoList.map(item =>
+                        <TodoItems
+                            key={item.id}
+                            itemId={item.id}
+                            onClick={()=>dispatch(deleteTodoItem(item.id))}
+                            edit={()=>editTodoItem(item.id)}
+                            {...item}
+                        />
+                        ) : <CollectionItem><p>No Todo Item!</p></CollectionItem>
+                    }
+                </Collection>
             </div>
         )
     }

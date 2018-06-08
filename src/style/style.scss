@@ -1,0 +1,31 @@
+.App {
+    text-align: center;
+    button {
+        @media screen and (max-width: 768px) {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        &.btn-delete {
+            background-color: #722f37;
+        }
+        + button {
+            margin-left: 10px;
+            @media screen and (max-width: 768px) {
+                margin-left: 0;
+            }
+        }
+    }
+}
+
+.picker--opened .picker__frame {
+    top: 5%;
+    .picker__date-display {
+        display: none;
+    }
+}
+
+.modal {
+    @media screen and (max-width: 768px) {
+        width: 100%;
+    }
+}
