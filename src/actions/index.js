@@ -12,6 +12,11 @@ export const deleteTodoItem = (itemId) => ({
   itemId
 })
 
+export const multipleDeleteTodoItem = (itemIds) => ({
+  type: 'multipleDelete',
+  itemIds
+})
+
 export const deleteObject = ()=> ({
   type: 'del',
   itemId
@@ -22,4 +27,10 @@ export const updateTodoItem = (itemId, text, dueDate) => ({
   itemId,
   text,
   dueDate
+})
+
+export const updateOrder = (itemId, position)=>({
+  type: 'sort',
+  itemId,
+  position
 })

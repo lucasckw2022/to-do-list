@@ -8,11 +8,9 @@ const todoList = (state = [], action) => {
                 completed: false
             }];
         case 'delete':
-            state.filter(item => {
-                console.log(item, action.itemId, item.id != action.itemId)
-                item.id != action.itemId
-            })
             return state.filter(item => item.id != action.itemId)
+        case 'multipleDelete':
+            return state.filter(item => action.itemIds.indexOf(item.id) < 0 )
         case 'del':
             return state.filter((item, id) => id != action.itemId)
         case 'update':
@@ -25,6 +23,14 @@ const todoList = (state = [], action) => {
             return state.map(item => {
                 return item.id === action.itemId ? updatedItem : item
             })
+        case 'sort':
+            if(state[action.position].id != action.itemId) {
+                let origin
+                state.map((item, id) => item.id == action.itemId ? origin = id: null)
+                state.splice(action.position, 0, state.splice(origin, 1)[0])
+                state = state
+            } 
+            return state
         default:
             return state;
     }
