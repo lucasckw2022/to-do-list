@@ -20,14 +20,14 @@ module.exports = {
     resolve: {
       extensions: ['*', '.js', '.jsx']
     },
-    output: {
-      path: __dirname + '/dist',
-      publicPath: './',
-      filename: 'bundle.js'
-    },
-    devServer: {
-      contentBase: './dist'
-    },
+    // output: {
+    //   path: __dirname + '/dist',
+    //   publicPath: './',
+    //   filename: 'bundle.js'
+    // },
+    // devServer: {
+    //   contentBase: './dist'
+    // },
     plugins: [
       new HtmlWebPackPlugin({
         template: "./public/index.html",
